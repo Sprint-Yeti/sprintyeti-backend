@@ -17,4 +17,4 @@ class Label(db.Model):
     color = db.Column(db.String(20))
 
     tasks = db.relationship(
-        'Task', secondary=task_labels, back_populates='tasks')
+        'Task', secondary=task_labels, back_populates='labels')

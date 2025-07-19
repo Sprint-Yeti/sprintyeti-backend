@@ -3,12 +3,14 @@ import os
 import time
 from functools import wraps
 import openai
-from langchain import LLMChain, PromptTemplate
-from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chat_models import ChatOpenAI
 
 # Configure OpenAI key and LangChain LLM
 openai.api_key = os.getenv('OPENAI_API_KEY')
-llm = OpenAI(model_name="gpt-4", api_key=openAI.api_key, temperature=0.7)
+llm = ChatOpenAI(model_name="gpt-4.1",
+                 openai_api_key=openai.api_key, temperature=0.7)
 
 
 class AIService:

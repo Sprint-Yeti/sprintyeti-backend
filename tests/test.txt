@@ -1,0 +1,146 @@
+# ───── Users ────────────────────────────────────────────────────────────
+
+# List users
+curl -X GET http://localhost:5000/api/v1/users
+
+# Get user #1
+curl -X GET http://localhost:5000/api/v1/users/1
+
+# Create a new user
+curl -X POST http://localhost:5000/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Dave","email":"dave@example.com","password":"pass1234"}'
+
+# Update user #1
+curl -X PATCH http://localhost:5000/api/v1/users/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"David","email":"david@example.com"}'
+
+# Delete user #1
+curl -X DELETE http://localhost:5000/api/v1/users/1
+
+# ───── Teams ────────────────────────────────────────────────────────────
+
+# List teams
+curl -X GET http://localhost:5000/api/v1/teams
+
+# Create a team
+curl -X POST http://localhost:5000/api/v1/teams \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Alpha Team","owner_id":2}'
+
+# ───── Roles ────────────────────────────────────────────────────────────
+
+# List roles
+curl -X GET http://localhost:5000/api/v1/roles
+
+# Create a role
+curl -X POST http://localhost:5000/api/v1/roles \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Manager"}'
+
+# ───── Plans & Subscriptions ─────────────────────────────────────────────
+
+# List plans
+curl -X GET http://localhost:5000/api/v1/plans
+
+# List usage (token_usage)
+curl -X GET http://localhost:5000/api/v1/usage
+
+# Create a subscription for user #2
+curl -X POST http://localhost:5000/api/v1/subscriptions \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":2,"plan_id":2,"status":"active","remaining_tokens":100000}'
+
+# Get subscriptions for user #2
+curl -X GET http://localhost:5000/api/v1/subscriptions/2
+
+# ───── Projects ─────────────────────────────────────────────────────────
+
+# List projects
+curl -X GET http://localhost:5000/api/v1/projects
+
+# Create a project
+curl -X POST http://localhost:5000/api/v1/projects \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Mobile App","description":"Build v1 of mobile app","owner_id":2,"team_id":1}'
+
+# ───── Tasks ────────────────────────────────────────────────────────────
+
+# List tasks
+curl -X GET http://localhost:5000/api/v1/tasks
+
+# Create a task
+curl -X POST http://localhost:5000/api/v1/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Setup CI","description":"Configure GitHub Actions","importance":"important_not_urgent","status":"pending","deadline":"2025-08-15T12:00:00Z","project_id":1,"assigned_user_id":2,"assigned_team_id":1}'
+
+# ───── Commands ─────────────────────────────────────────────────────────
+
+# Execute a command (DSL)
+curl -X POST http://localhost:5000/api/v1/commands \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":2,"team_id":1,"text":"Add task:\"Write tests\"; Status:pending; Assigned to:@Dave; Deadline:2025-07-31; Tech stack:[\"PyTest\",\"Flask\"]; Phase focus:Testing"}'
+
+# ───── Labels ───────────────────────────────────────────────────────────
+
+# List labels
+curl -X GET http://localhost:5000/api/v1/labels
+
+# Create a label
+curl -X POST http://localhost:5000/api/v1/labels \
+  -H "Content-Type: application/json" \
+  -d '{"name":"backend","color":"#00FF00"}'
+
+# ───── Comments ─────────────────────────────────────────────────────────
+
+# List comments
+curl -X GET http://localhost:5000/api/v1/comments
+
+# Add a comment to task #1
+curl -X POST http://localhost:5000/api/v1/comments \
+  -H "Content-Type: application/json" \
+  -d '{"task_id":1,"author_id":2,"content":"Please prioritize this."}'
+
+# ───── Attachments ───────────────────────────────────────────────────────
+
+# List attachments
+curl -X GET http://localhost:5000/api/v1/attachments
+
+# Upload an attachment (simulate with URL)
+curl -X POST http://localhost:5000/api/v1/attachments \
+  -H "Content-Type: application/json" \
+  -d '{"task_id":1,"filename":"diagram.png","url":"https://example.com/diagram.png"}'
+
+# ───── Notifications ─────────────────────────────────────────────────────
+
+# List notifications
+curl -X GET http://localhost:5000/api/v1/notifications
+
+# Mark notifications read for user #2
+curl -X POST http://localhost:5000/api/v1/notifications/2/mark_read
+
+# ───── Kanban ───────────────────────────────────────────────────────────
+
+# List Kanban boards
+curl -X GET http://localhost:5000/api/v1/kanban/boards
+
+# Create a Kanban board for project #1
+curl -X POST http://localhost:5000/api/v1/kanban/boards \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"name":"Sprint Board"}'
+
+# Create a Kanban column in board #1
+curl -X POST http://localhost:5000/api/v1/kanban/columns \
+  -H "Content-Type: application/json" \
+  -d '{"board_id":1,"name":"In Review","position":2}'
+
+# ───── Table Views ──────────────────────────────────────────────────────
+
+# List table views
+curl -X GET http://localhost:5000/api/v1/table_views
+
+# Create a table view for project #1
+curl -X POST http://localhost:5000/api/v1/table_views \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":1,"filters":{"status":"pending"},"columns":["id","title","deadline"]}'

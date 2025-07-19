@@ -20,7 +20,9 @@ class Task(db.Model):
     assigned_team_id = db.Column(db.Integer, db.ForeignKey('teams.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    creator = db.relationship('User', foreign_keys=[assigned_user_id])
+    # Explicit back_populates to match User.tasks
+    creator = db.relationship('User', foreign_keys=[
+                              assigned_user_id], back_populates='tasks')
     team_assignee = db.relationship('Team', foreign_keys=[assigned_team_id])
     kanban_columns = db.relationship(
         'KanbanColumn', secondary=kanban_tasks, back_populates='tasks')

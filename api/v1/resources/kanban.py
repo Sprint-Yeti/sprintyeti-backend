@@ -3,6 +3,7 @@ from flask_smorest import Blueprint
 from api.v1.extensions import db
 from api.v1.models.kanban import KanbanBoard, KanbanColumn
 from api.v1.schemas.kanban import KanbanBoardSchema, KanbanColumnSchema
+from flask_smorest import abort
 
 blp = Blueprint('kanban', 'kanban', url_prefix='/api/v1/kanban',
                 description='Operations on kanban boards and columns')
@@ -28,6 +29,9 @@ def create_board(data):
 @blp.arguments(KanbanColumnSchema)
 @blp.response(201, KanbanColumnSchema)
 def create_column(data):
+    # Verify the board exists
+    if not KanbanBoard.query.get(data['board_id']):
+        abort(404, message="Kanban board not found")
     col = KanbanColumn(**data)
     db.session.add(col)
     db.session.commit()
