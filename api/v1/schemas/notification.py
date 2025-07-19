@@ -1,6 +1,7 @@
 # api/v1/schemas/notification.py
 from marshmallow import Schema, fields
 
+
 class NotificationSchema(Schema):
     id = fields.Int(dump_only=True)
     user_id = fields.Int(required=True)
